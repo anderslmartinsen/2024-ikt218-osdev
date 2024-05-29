@@ -1,24 +1,19 @@
-#include "libc/stdio.h"
 #include "libc/stdbool.h"
-#include "libc/stdint.h"
+#include "monitor.h"
 
-bool print(const char* data, size_t length)
-{
-    int row = 0;
-    int offset = 0;
-    char* video_memory = (char*)0xb8000;
-    while (*data)
-    {
-        if (*data == '\n')
-        {
-            row++;
-            offset = (row * 80) * 2;
-            data++;
-            continue;
-        }
+#define EOF (-1)
 
-        video_memory[offset++] = *data++;
-        video_memory[offset++] = 0x0F;
-    }
-    return 0;
+// takes int insted of char for backward compatibility
+int putchar(int ic) {
+    char c = (char) ic;
+    monitor_put(c);
+	return ic;
+}
+
+bool print(const char* data, size_t length) {
+	const unsigned char* bytes = (const unsigned char*) data;
+	for (size_t i = 0; i < length; i++)
+		if (putchar(bytes[i]) == EOF)
+			return false;
+	return true;
 }
