@@ -3,6 +3,7 @@
 #include "libc/stdint.h"
 #include "common.h"
 
+// defines colors
 enum vga_color {
 	VGA_COLOR_BLACK = 0,
 	VGA_COLOR_BLUE = 1,
@@ -22,13 +23,18 @@ enum vga_color {
 	VGA_COLOR_WHITE = 15,
 };
 
+// Screen size
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
  
+// set video_memory address
 uint16_t *video_memory = (uint16_t *)0xB8000;
+// create counters for row and colum for next char
 size_t terminal_row;
 size_t terminal_column;
+// create var for terminal color
 uint8_t terminal_color;
+// Framebuffer
 uint16_t* terminal_buffer;
 
 // Scrolls the text on the screen up by one line.
@@ -74,24 +80,32 @@ static void move_cursor()
 	outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
 }
 
-
+// combines the front color and background color into one byte for video memory and returns that byte.
+// The lower 4 bits represent the front color and the upper 4 represent the beckgroud color.
 static inline uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) 
 {
 	return fg | bg << 4;
 }
  
+// Makes a 16 bit value where the lower 8 bits represent uc and the upper 8 represents color.
+// This is used to make a VGA text memory entry
 static inline uint16_t vga_entry(unsigned char uc, uint8_t color) 
 {
 	return (uint16_t) uc | (uint16_t) color << 8;
 }
 
-
+// Inisialises the screen
 void monitor_initialize(void) 
 {
+	// sets row and colum to 0 so that it starts in the upper left
 	terminal_row = 0;
 	terminal_column = 0;
+	// Sets the front color to grey and backgroud to black.
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+	
+	// Makes terminal_buffer point to the video memory.
 	terminal_buffer = video_memory;
+	// Loops throgh the the videomemory within our screen size and makes the screen full of spaces with our defined colors
 	for (size_t y = 0; y < VGA_HEIGHT; y++) {
 		for (size_t x = 0; x < VGA_WIDTH; x++) {
 			const size_t index = y * VGA_WIDTH + x;
@@ -100,9 +114,12 @@ void monitor_initialize(void)
 	}
 }
 
+// Puts a video memory entry at a certion position in the video memory
 void monitor_putentryat(char c, uint8_t color, size_t x, size_t y) 
 {
+	// Finds the possition of the entry
 	const size_t index = y * VGA_WIDTH + x;
+	// Puts the entry at the address
 	terminal_buffer[index] = vga_entry(c, color);
 }
 
@@ -111,6 +128,7 @@ void _monitor_put(char c)
 	// Deal with special character behavior
 	switch (c)
 	{
+	// if char is '\n' it goes to the first colum, next row and scrolls if needed.
 	case '\n':
 		terminal_column = 0;
 		terminal_row++;
@@ -121,7 +139,9 @@ void _monitor_put(char c)
 		break;
 	}
 
+	// puts entry in the videomemory
 	monitor_putentryat(c, terminal_color, terminal_column, terminal_row);
+	// increments the column and row counter and resets them if they go outside the screen width and height
 	if (++terminal_column == VGA_WIDTH) {
 		terminal_column = 0;
 		if (++terminal_row == VGA_HEIGHT)
@@ -131,6 +151,7 @@ void _monitor_put(char c)
 
 void monitor_put(char c) 
 {
+	
 	_monitor_put(c);
     // Scroll the screen if needed.
     scroll();
@@ -140,6 +161,7 @@ void monitor_put(char c)
 
 void monitor_write(const char* data, size_t size) 
 {
+	// repets _monitor_put for every char in data based on itæs size
 	for (size_t i = 0; i < size; i++)
 		_monitor_put(data[i]);
     
@@ -149,6 +171,7 @@ void monitor_write(const char* data, size_t size)
     move_cursor();
 }
 
+// Calls monitor_write, but size gets found in function
 void monitor_writestring(const char* data) 
 {
 	monitor_write(data, strlen(data));
@@ -161,6 +184,7 @@ void monitor_clear()
     uint8_t attributeByte = (0 /*black*/ << 4) | (15 /*white*/ & 0x0F);
     uint16_t blank = 0x20 /* space */ | (attributeByte << 8);
 
+	// loops throug the framebuffer and assigns blank to it.
     int i;
     for (i = 0; i < 80*25; i++)
     {

@@ -24,6 +24,7 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     init_gdt();
 
     print("Hello,\nWorld!", strlen("Hello,\nWorld!"));
+    print("Hello,\nWorld2!", strlen("Hello,\nWorld2!"));
 
     // Call cpp kernel_main (defined in kernel.cpp)
     return kernel_main();
