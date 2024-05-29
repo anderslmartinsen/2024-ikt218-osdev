@@ -42,18 +42,3 @@ void gdt_set_gate(int32_t num, uint32_t base, uint32_t limit, uint8_t access, ui
     gdt[num].granularity |= gran & 0xF0;
     gdt[num].access      = access;
 }
-
-void gdt_flush(uint32_t gdt_ptr) {
-  asm volatile(
-    "lgdt (%0)\n"
-    "mov $0x10, %%ax\n"
-    "mov %%ax, %%ds\n"
-    "mov %%ax, %%es\n"
-    "mov %%ax, %%fs\n"
-    "mov %%ax, %%gs\n"
-    "mov %%ax, %%ss\n"
-    "ljmp $0x08, $flush_segment\n"
-    "flush_segment:\n"
-    : : "r" (gdt_ptr) : "ax"
-  );
-}
