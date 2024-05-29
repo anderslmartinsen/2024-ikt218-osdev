@@ -6,6 +6,7 @@
 #include "gdt.h"
 #include <multiboot2.h>
 
+#include "monitor.h"
 
 
 struct multiboot_info {
@@ -18,13 +19,11 @@ int kernel_main();
 
 
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
+    monitor_initialize();
+
     init_gdt();
 
-    char* hello_world = "Hello, World1!\nHello, World2!";
-    size_t len = strlen(hello_world);
-
-    print(hello_world, len);
-
+    print("Hello,\nWorld!", strlen("Hello,\nWorld!"));
 
     // Call cpp kernel_main (defined in kernel.cpp)
     return kernel_main();
