@@ -132,7 +132,7 @@ void _monitor_put(char c)
 	case '\n':
 		terminal_column = 0;
 		terminal_row++;
-        scroll();
+		scroll();
 		return;
 		break;
 	default:
