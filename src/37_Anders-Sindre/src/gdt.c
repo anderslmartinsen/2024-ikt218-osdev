@@ -1,12 +1,4 @@
-#include "gdt.h"
-
-// How many entryes we want in the gdt array
-#define GDT_ENTRIES 5
-
-// Makes an array based on gdt_entry
-struct gdt_entry gdt[GDT_ENTRIES];
-// makes a instance of gdt_ptr
-struct gdt_ptr gdt_ptr;
+#include "descriptor_tables.h"
 
 // Defined in gdt.asm
 extern void gdt_flush(uint32_t gdt_ptr);

@@ -3,8 +3,9 @@
 #include "libc/stdbool.h"
 #include "libc/string.h"
 #include "libc/stdio.h"
-#include "gdt.h"
+#include "descriptor_tables.h"
 #include <multiboot2.h>
+#include "interrupts.h"
 
 #include "monitor.h"
 
@@ -22,6 +23,10 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     monitor_initialize();
 
     init_gdt();
+
+    init_idt();
+
+    init_irq();
 
     printf("Hello, World! %d", 10);
 

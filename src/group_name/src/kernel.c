@@ -9,7 +9,7 @@ struct multiboot_info {
     uint32_t size;
     uint32_t reserved;
     struct multiboot_tag *first;
-};
+};z
 
 int kernel_main();
 
