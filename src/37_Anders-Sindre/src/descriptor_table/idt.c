@@ -62,6 +62,7 @@ void init_interrupts(){
     idt_set_gate( 0, (uint32_t)isr0 , 0x08, 0x8E);
     idt_set_gate( 1, (uint32_t)isr1 , 0x08, 0x8E);
     idt_set_gate( 2, (uint32_t)isr2 , 0x08, 0x8E);
+    /*
     idt_set_gate( 3, (uint32_t)isr3 , 0x08, 0x8E);
     idt_set_gate( 4, (uint32_t)isr4 , 0x08, 0x8E);
     idt_set_gate( 5, (uint32_t)isr5 , 0x08, 0x8E);
@@ -107,4 +108,5 @@ void init_interrupts(){
     idt_set_gate(45, (uint32_t)irq13, 0x08, 0x8E);
     idt_set_gate(46, (uint32_t)irq14, 0x08, 0x8E);
     idt_set_gate(47, (uint32_t)irq15, 0x08, 0x8E);
+    */
 }

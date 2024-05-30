@@ -66,6 +66,7 @@ add_executable(uiaos-kernel
 	src/descriptor_table/gdt.asm
 	src/descriptor_table/idt.c
 	src/descriptor_table/idt.asm
+
 	src/string.c
 	src/stdio.c
 	src/ascii_table.c
@@ -74,6 +75,7 @@ add_executable(uiaos-kernel
 	src/isr.c
 	src/isr_asm.asm
 	src/irq.c
+	src/monitor.c
 )
 
 

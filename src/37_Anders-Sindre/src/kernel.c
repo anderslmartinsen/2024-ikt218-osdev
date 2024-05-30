@@ -8,6 +8,7 @@
 #include <multiboot2.h>
 #include "var.h"
 #include "interrupts.h"
+#include "monitor.h"
 
 
 struct multiboot_info {
@@ -22,12 +23,16 @@ int kernel_main();
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     init_gdt();
     init_idt();
-    char* hello_world = "Hello, World1!\nHello, World2!";
-    size_t len = strlen(hello_world);
-
-    print(hello_world, len);
+    init_interrupts();
     init_irq();
+
+    monitor_initialize();
+
+    printf("Hello world! :D\n");
+    printf("what");
 
     // Call cpp kernel_main (defined in kernel.cpp)
     return kernel_main();
+
+    printf(":(");
 }

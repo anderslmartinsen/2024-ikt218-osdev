@@ -56,6 +56,7 @@
 extern void isr0 ();
 extern void isr1 ();
 extern void isr2 ();
+/*
 extern void isr3 ();
 extern void isr4 ();
 extern void isr5 ();
@@ -86,6 +87,7 @@ extern void isr29();
 extern void isr30();
 extern void isr31();
 extern void irq0 ();
+*/
 extern void irq1 ();
 extern void irq2 ();
 extern void irq3 ();
