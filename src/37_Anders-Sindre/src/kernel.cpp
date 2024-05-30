@@ -49,7 +49,7 @@ printf("123");
     printf("Kernel main loop\n");
     int i = 0;
     while(true) {
-        i++;
+
     }
 
     printf("youll never see me(hopefully)");
