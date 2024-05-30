@@ -3,6 +3,7 @@
 #include "libc/stdarg.h"
 #include "libc/stdint.h"
 #include "libc/limits.h"
+#include "libc/string.h"
 
 #define EOF (-1)
 
