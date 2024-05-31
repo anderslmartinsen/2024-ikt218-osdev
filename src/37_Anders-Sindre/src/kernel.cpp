@@ -8,7 +8,6 @@ extern "C"{
 }
 
 
-
 extern "C" int kernel_main(void);
 int kernel_main(){
 
@@ -27,9 +26,10 @@ int kernel_main(){
     register_irq_handler(IRQ1, [](registers_t*, void*) {
         // Read from keyboard
         unsigned char scan_code = inb(0x60);
+        // Convert scan_code to ASCII char
         char f = scancode_to_ascii(&scan_code);
-        printf("\n");
-        printf("ACII value: %d, ACII char %c\n", f, f);
+        // Print ASCII value and char
+        printf("ASCII value: %d, ASCII char %c\n", f, f);
 
         // Disable
         asm volatile("cli");
@@ -37,8 +37,11 @@ int kernel_main(){
 
     asm volatile("sti");
 
+    // Trigger IRS1
     asm volatile ("int $0x1");
+    // Trigger IRS2
     asm volatile ("int $0x2");
+    // Trigger IRS3
     asm volatile ("int $0x3");
 
     
