@@ -3,9 +3,9 @@
 #include "libc/stdbool.h"
 #include "libc/string.h"
 #include "libc/stdio.h"
-#include "gdt.h"
+#include "descriptor_tables.h"
 #include <multiboot2.h>
-
+#include "interrupts.h"
 #include "monitor.h"
 
 
@@ -19,13 +19,16 @@ int kernel_main();
 
 
 int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
+    // Inizialises the monitor
     monitor_initialize();
-
+    // Inizialises GDT
     init_gdt();
+    // Inizialises IDT
+    init_idt();
+    // Inizialises IRQ
+    init_irq();
 
-    printf("Hello, World! %d", 10);
-
-    
+    printf("Hello, World!\n");
 
     // Call cpp kernel_main (defined in kernel.cpp)
     return kernel_main();
