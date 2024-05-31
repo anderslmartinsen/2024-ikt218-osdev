@@ -1,4 +1,4 @@
-#ifndef INTERRUPTS_H
+ #ifndef INTERRUPTS_H
 #define INTERRUPTS_H
 
 #include "libc/stdint.h"
@@ -136,9 +136,6 @@ void register_interrupt_handler(uint8_t n, isr_t handler, void*);
 
 static struct int_handler_t int_handlers[IDT_ENTRIES];
 static struct int_handler_t irq_handlers[IRQ_COUNT];
-
-
-#define IRQ_COUNT 16
 
 
 #endif
