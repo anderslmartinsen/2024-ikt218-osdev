@@ -27,7 +27,7 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
 
     init_irq();
 
-    printf("Hello, World! %d", 10);
+    printf("Hello, World!\n");
 
     
 

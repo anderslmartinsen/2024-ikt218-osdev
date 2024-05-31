@@ -12,11 +12,15 @@ extern "C"{
 extern "C" int kernel_main(void);
 int kernel_main(){
 
-    register_interrupt_handler(2, [](registers_t* regs, void* context) {
+    register_interrupt_handler(ISR1, [](registers_t* regs, void* context) {
+        printf("Interrupt 1 - OK\n");
+    }, NULL);
+
+    register_interrupt_handler(ISR2, [](registers_t* regs, void* context) {
         printf("Interrupt 2 - OK\n");
     }, NULL);
 
-    register_interrupt_handler(3, [](registers_t* regs, void* context) {
+    register_interrupt_handler(ISR3, [](registers_t* regs, void* context) {
         printf("Interrupt 3 - OK\n");
     }, NULL);
 
@@ -25,26 +29,19 @@ int kernel_main(){
         unsigned char scan_code = inb(0x60);
         char f = scancode_to_ascii(&scan_code);
         printf("\n");
-        printf("%d %c :D \n", f, f);
+        printf("ACII value: %d, ACII char %c\n", f, f);
 
         // Disable
         asm volatile("cli");
     }, NULL);
 
-    register_irq_handler(IRQ12, [](registers_t* regs, void*)  {
-        printf("hello :D");
-        //mouse movement
-        unsigned char scan_code = inb(0x60);
-        mouse_isr(regs);
-    }, NULL);
-
     asm volatile("sti");
 
-    asm volatile ("int $0x3");
-    asm volatile ("int $0x3");
+    asm volatile ("int $0x1");
+    asm volatile ("int $0x2");
     asm volatile ("int $0x3");
 
-    asm volatile ("int $0x60");
+    
 
 
     while (true)
