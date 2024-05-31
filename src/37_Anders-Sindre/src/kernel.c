@@ -6,7 +6,6 @@
 #include "descriptor_tables.h"
 #include <multiboot2.h>
 #include "interrupts.h"
-
 #include "monitor.h"
 
 

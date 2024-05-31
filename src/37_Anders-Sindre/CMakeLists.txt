@@ -72,6 +72,7 @@ add_executable(uiaos-kernel
 	src/irq.c
 	src/irs.c
 	src/input.c
+	src/isr/mouse_isr.c
 )
 
 

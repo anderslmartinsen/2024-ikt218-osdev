@@ -5,7 +5,7 @@
 #include "libc/stddef.h"
 
 // Initializes the screen parameters and video memory
-void monitor_initialize() ;
+void monitor_initialize();
 // Sets the monitor color
 void monitor_setcolor(uint8_t color);
 
